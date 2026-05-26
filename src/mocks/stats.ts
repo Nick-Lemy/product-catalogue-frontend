@@ -22,4 +22,12 @@ export const mockDashboardStats = {
     .length,
   rejectedAssets: mockAssets.filter((a) => a.status === "REJECTED").length,
   recentAssets,
+  productsByBrand: Object.entries(
+    mockProducts.reduce<Record<string, number>>((acc, p) => {
+      acc[p.brand] = (acc[p.brand] ?? 0) + 1;
+      return acc;
+    }, {}),
+  )
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => b.value - a.value),
 };

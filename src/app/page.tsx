@@ -2,6 +2,7 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import { AiOutlineProduct } from "react-icons/ai";
 import { MdInventory } from "react-icons/md";
 import { mockDashboardStats } from "@/mocks/stats";
+import BarListUI from "./_components/BarList";
 import StatCard from "./_components/StatCard";
 
 export default function Home() {
@@ -36,6 +37,13 @@ export default function Home() {
           Icon={AiOutlineProduct}
           title="Assets Pending Review"
           value={mockDashboardStats.assetsPendingReview}
+        />
+      </Flex>
+      <Flex mt={4} gap={4} w="full" rounded="md">
+        <BarListUI
+          data={mockDashboardStats.productsByBrand}
+          title="Top Brands"
+          titleLabel1="Product"
         />
       </Flex>
     </>
