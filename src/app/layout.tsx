@@ -1,10 +1,9 @@
+import { Flex } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Provider } from "./_components/ui/provider";
-
-import "./globals.css";
-import { Box, Flex } from "@chakra-ui/react";
 import SideBar from "./_components/SideBar";
+import { Provider } from "./_components/ui/provider";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,9 +31,9 @@ export default function RootLayout({
         <Provider>
           <Flex>
             <SideBar />
-            <Box pt={4} px={5}>
+            <Flex direction="column" pt={4} w="full" mx="auto" maxW="1200px">
               {children}
-            </Box>
+            </Flex>
           </Flex>
         </Provider>
       </body>
