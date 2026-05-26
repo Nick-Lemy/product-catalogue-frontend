@@ -1,11 +1,10 @@
 "use client";
-// biome-ignore assist/source/organizeImports: <explanation>
 import { Box, Flex, Text, VStack } from "@chakra-ui/react";
-import { MdDashboard, MdInventory } from "react-icons/md";
 import { AiOutlineProduct } from "react-icons/ai";
+import { MdDashboard, MdInventory } from "react-icons/md";
+import { TbLogout2 } from "react-icons/tb";
 import NavItem from "./NavItem";
 import AvatarImage from "./ui/AvatarImage";
-import { TbLogout2 } from "react-icons/tb";
 
 function SideBar() {
   return (
