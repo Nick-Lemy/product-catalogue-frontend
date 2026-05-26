@@ -33,10 +33,9 @@ function NavItem({
         borderRadius="md"
         bg={isActive ? "blue.800" : "transparent"}
         _hover={{ bg: isActive ? "blue.800" : "gray.700" }}
-        _active={{ bg: "blue.500" }}
       >
-        <Icon size={20} />
-        <Text>{label}</Text>
+        <Icon size={18} />
+        <Text fontSize={"sm"}>{label}</Text>
       </Box>
     </Link>
   );

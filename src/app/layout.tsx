@@ -3,8 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Provider } from "./_components/ui/provider";
 
 import "./globals.css";
-import SideBar from "./_components/SideBar";
 import { Box, Flex } from "@chakra-ui/react";
+import SideBar from "./_components/SideBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
