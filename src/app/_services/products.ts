@@ -15,11 +15,13 @@ async function find(filters?: ProductFilters): Promise<Product[]> {
   let results = [...mockProducts];
   if (filters?.name)
     results = results.filter((p) =>
-      p.name.toLowerCase().includes(filters.name!.toLowerCase()),
+      p.name.toLowerCase().includes(filters.name ?? "".toLowerCase()),
     );
   if (filters?.productCode)
     results = results.filter((p) =>
-      p.productCode.toLowerCase().includes(filters.productCode!.toLowerCase()),
+      p.productCode
+        .toLowerCase()
+        .includes(filters.productCode ?? "".toLowerCase()),
     );
   if (filters?.brand)
     results = results.filter((p) => p.brand === filters.brand);
