@@ -4,8 +4,8 @@ import { AiOutlineProduct } from "react-icons/ai";
 import { FaUser } from "react-icons/fa6";
 import { MdDashboard, MdInventory } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
-import NavItem from "./NavItem";
 import AvatarImage from "./ui/AvatarImage";
+import NavItem from "./ui/NavItem";
 
 function SideBar() {
   return (
