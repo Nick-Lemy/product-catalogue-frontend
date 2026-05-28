@@ -1,81 +1,70 @@
 import { mockProducts } from "@/mocks/products";
+import {
+  type CreateProductPayload,
+  type Product,
+  type ProductFilters,
+  ProductReadiness,
+  ProductStatus,
+  type UpdateProductPayload,
+} from "@/types/product";
 
-const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
+const delay = (ms = 1000) => new Promise((r) => setTimeout(r, ms));
 
-export interface ProductFilters {
-  name?: string;
-  productCode?: string;
-  brand?: string;
-  category?: string;
-  status?: string;
-  readiness?: string;
+async function find(filters?: ProductFilters): Promise<Product[]> {
+  await delay();
+  let results = [...mockProducts];
+  if (filters?.name)
+    results = results.filter((p) =>
+      p.name.toLowerCase().includes(filters.name!.toLowerCase()),
+    );
+  else if (filters?.productCode)
+    results = results.filter((p) =>
+      p.productCode.toLowerCase().includes(filters.productCode!.toLowerCase()),
+    );
+  else if (filters?.brand)
+    results = results.filter((p) => p.brand === filters.brand);
+  else if (filters?.category)
+    results = results.filter((p) => p.category === filters.category);
+  else if (filters?.status)
+    results = results.filter((p) => p.status === filters.status);
+  else if (filters?.readiness)
+    results = results.filter((p) => p.readiness === filters.readiness);
+  return results;
 }
 
-export interface CreateProductPayload {
-  name: string;
-  productCode: string;
-  description: string;
-  brand: string;
-  category: string;
-  targetMarket: string;
-  season: string;
+async function findById(id: string): Promise<Product | null> {
+  await delay();
+  return mockProducts.find((p) => p.id === id) ?? null;
 }
 
-export interface UpdateProductPayload extends Partial<CreateProductPayload> {
-  status?: string;
+async function create(payload: CreateProductPayload): Promise<Product> {
+  await delay();
+  const newProduct = {
+    id: `p${Date.now()}`,
+    ...payload,
+    status: ProductStatus.DRAFT,
+    readiness: ProductReadiness.NOT_READY,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  mockProducts.push(newProduct);
+  return newProduct;
 }
 
-export const productService = {
-  find: async (filters?: ProductFilters) => {
-    await delay();
-    let results = [...mockProducts];
-    if (filters?.name)
-      results = results.filter((p) =>
-        p.name.toLowerCase().includes(filters.name!.toLowerCase()),
-      );
-    if (filters?.productCode)
-      results = results.filter((p) =>
-        p.productCode.toLowerCase().includes(filters.productCode!.toLowerCase()),
-      );
-    if (filters?.brand)
-      results = results.filter((p) => p.brand === filters.brand);
-    if (filters?.category)
-      results = results.filter((p) => p.category === filters.category);
-    if (filters?.status)
-      results = results.filter((p) => p.status === filters.status);
-    if (filters?.readiness)
-      results = results.filter((p) => p.readiness === filters.readiness);
-    return results;
-  },
+async function update(
+  id: string,
+  payload: UpdateProductPayload,
+): Promise<Product> {
+  await delay();
+  const idx = mockProducts.findIndex((p) => p.id === id);
+  if (idx === -1) throw new Error("Product not found");
+  mockProducts[idx] = {
+    ...mockProducts[idx],
+    ...payload,
+    updatedAt: new Date().toISOString(),
+  };
+  return mockProducts[idx];
+}
 
-  findById: async (id: string) => {
-    await delay();
-    return mockProducts.find((p) => p.id === id) ?? null;
-  },
-
-  create: async (payload: CreateProductPayload) => {
-    await delay();
-    const newProduct = {
-      id: `p${Date.now()}`,
-      ...payload,
-      status: "DRAFT",
-      readiness: "NOT_READY",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    mockProducts.push(newProduct);
-    return newProduct;
-  },
-
-  update: async (id: string, payload: UpdateProductPayload) => {
-    await delay();
-    const idx = mockProducts.findIndex((p) => p.id === id);
-    if (idx === -1) throw new Error("Product not found");
-    mockProducts[idx] = {
-      ...mockProducts[idx],
-      ...payload,
-      updatedAt: new Date().toISOString(),
-    };
-    return mockProducts[idx];
-  },
-};
+const productsService = { find, findById, create, update };
+export default productsService;
