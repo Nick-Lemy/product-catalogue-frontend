@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Button,
   Card,
@@ -9,16 +8,9 @@ import {
   Separator,
   Text,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { BsArrowRight } from "react-icons/bs";
 import { mockDashboardStats } from "@/mocks/stats";
-import { formatDate } from "@/utils/helpers";
-
-const statusBadge = {
-  APPROVED: { label: "Approved", colorPalette: "green" },
-  PENDING_REVIEW: { label: "Pending", colorPalette: "orange" },
-  REJECTED: { label: "Rejected", colorPalette: "red" },
-} as const;
+import AssetCard from "./AssetCard";
 
 function RecentlyUploaded() {
   return (
@@ -44,61 +36,20 @@ function RecentlyUploaded() {
       <Card.Body pt={3} px={3}>
         <Flex direction="column" gap={1}>
           {mockDashboardStats.recentAssets.map((asset) => {
-            const badge = statusBadge[asset.status as keyof typeof statusBadge];
             return (
-              <HStack
+              <AssetCard
                 key={asset.id}
-                px={2}
-                py={2}
-                rounded="md"
-                _hover={{ bg: "bg.subtle" }}
-                transition="background 0.15s"
-                gap={3}
-                cursor="pointer"
-              >
-                <Box
-                  w="40px"
-                  h="40px"
-                  rounded="md"
-                  overflow="hidden"
-                  flexShrink={0}
-                  bg="bg.muted"
-                >
-                  <Image
-                    src={asset.fileUrl}
-                    alt={asset.title}
-                    width={40}
-                    height={40}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Box>
-                <Box flex="1" minW={0}>
-                  <Text
-                    fontSize="sm"
-                    fontWeight="medium"
-                    overflow="hidden"
-                    textOverflow="ellipsis"
-                    whiteSpace="nowrap"
-                  >
-                    {asset.title}
-                  </Text>
-                  <Text fontSize="xs" color="fg.muted">
-                    {formatDate(new Date(asset.uploadedAt), false)}
-                  </Text>
-                </Box>
-                <Badge
-                  colorPalette={badge.colorPalette}
-                  variant="subtle"
-                  size="xs"
-                  flexShrink={0}
-                >
-                  {badge.label}
-                </Badge>
-              </HStack>
+                asset={{
+                  id: asset.id,
+                  title: asset.title,
+                  fileUrl: asset.fileUrl,
+                  uploadedAt: asset.uploadedAt,
+                  status: asset.status as
+                    | "APPROVED"
+                    | "PENDING_REVIEW"
+                    | "REJECTED",
+                }}
+              />
             );
           })}
         </Flex>
