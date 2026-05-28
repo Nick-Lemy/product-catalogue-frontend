@@ -6,7 +6,7 @@ import {
   MdRocketLaunch,
 } from "react-icons/md";
 import { mockDashboardStats } from "@/mocks/stats";
-import StatCard from "./ui/StatCard";
+import StatCard from "../ui/StatCard";
 
 function StatCardsSection() {
   return (

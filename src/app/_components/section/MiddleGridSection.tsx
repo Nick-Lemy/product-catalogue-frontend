@@ -1,6 +1,6 @@
 import { Grid } from "@chakra-ui/react";
-import ProductsByBrand from "./ProductsByBrand";
-import RecentlyUploaded from "./RecentlyUploaded";
+import ProductsByBrand from "../ProductsByBrand";
+import RecentlyUploaded from "../RecentlyUploaded";
 
 function MiddleGridSection() {
   return (
