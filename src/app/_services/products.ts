@@ -17,17 +17,17 @@ async function find(filters?: ProductFilters): Promise<Product[]> {
     results = results.filter((p) =>
       p.name.toLowerCase().includes(filters.name!.toLowerCase()),
     );
-  else if (filters?.productCode)
+  if (filters?.productCode)
     results = results.filter((p) =>
       p.productCode.toLowerCase().includes(filters.productCode!.toLowerCase()),
     );
-  else if (filters?.brand)
+  if (filters?.brand)
     results = results.filter((p) => p.brand === filters.brand);
-  else if (filters?.category)
+  if (filters?.category)
     results = results.filter((p) => p.category === filters.category);
-  else if (filters?.status)
+  if (filters?.status)
     results = results.filter((p) => p.status === filters.status);
-  else if (filters?.readiness)
+  if (filters?.readiness)
     results = results.filter((p) => p.readiness === filters.readiness);
   return results;
 }

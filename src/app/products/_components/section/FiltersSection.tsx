@@ -1,5 +1,7 @@
-import { Box, Button, Flex, Input, NativeSelect, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { mockProducts } from "@/mocks/products";
+import { ProductReadiness, ProductStatus } from "@/types/product";
+import SelectFilter from "../SelectFilter";
 
 interface FiltersSectionProps {
   search: string;
@@ -28,6 +30,9 @@ function FiltersSection({
 }: FiltersSectionProps) {
   const brands = [...new Set(mockProducts.map((p) => p.brand))];
   const categories = [...new Set(mockProducts.map((p) => p.category))];
+  const statusOptions: ProductStatus[] = Object.values(ProductStatus);
+  const readinessOptions: ProductReadiness[] = Object.values(ProductReadiness);
+
   const hasFilters = search || brand || category || status || readiness;
 
   const clearFilters = () => {
@@ -52,78 +57,30 @@ function FiltersSection({
             onChange={(e) => setSearch(e.target.value)}
           />
         </Box>
-        <Box flex="1" minW="130px">
-          <Text fontSize="xs" fontWeight="medium" color="fg.muted" mb={1}>
-            Brand
-          </Text>
-          <NativeSelect.Root size="sm">
-            <NativeSelect.Field
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-            >
-              <option value="">All brands</option>
-              {brands.map((b) => (
-                <option key={b} value={b}>
-                  {b}
-                </option>
-              ))}
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
-        </Box>
-        <Box flex="1" minW="130px">
-          <Text fontSize="xs" fontWeight="medium" color="fg.muted" mb={1}>
-            Category
-          </Text>
-          <NativeSelect.Root size="sm">
-            <NativeSelect.Field
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="">All categories</option>
-              {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
-        </Box>
-        <Box flex="1" minW="130px">
-          <Text fontSize="xs" fontWeight="medium" color="fg.muted" mb={1}>
-            Status
-          </Text>
-          <NativeSelect.Root size="sm">
-            <NativeSelect.Field
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-            >
-              <option value="">All statuses</option>
-              <option value="DRAFT">Draft</option>
-              <option value="IN_REVIEW">In Review</option>
-              <option value="PUBLISHED">Published</option>
-              <option value="ARCHIVED">Archived</option>
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
-        </Box>
-        <Box flex="1" minW="130px">
-          <Text fontSize="xs" fontWeight="medium" color="fg.muted" mb={1}>
-            Readiness
-          </Text>
-          <NativeSelect.Root size="sm">
-            <NativeSelect.Field
-              value={readiness}
-              onChange={(e) => setReadiness(e.target.value)}
-            >
-              <option value="">All</option>
-              <option value="READY">Ready</option>
-              <option value="NOT_READY">Not Ready</option>
-            </NativeSelect.Field>
-            <NativeSelect.Indicator />
-          </NativeSelect.Root>
-        </Box>
+        <SelectFilter
+          title="Brand"
+          value={brand}
+          setOption={setBrand}
+          options={brands}
+        />
+        <SelectFilter
+          title="Category"
+          value={category}
+          setOption={setCategory}
+          options={categories}
+        />
+        <SelectFilter
+          title="Status"
+          value={status}
+          setOption={setStatus}
+          options={statusOptions}
+        />
+        <SelectFilter
+          title="Readiness"
+          value={readiness}
+          setOption={setReadiness}
+          options={readinessOptions}
+        />
         {hasFilters && (
           <Button
             variant="ghost"
