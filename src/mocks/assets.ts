@@ -1,11 +1,12 @@
 export const mockAssets = [
-  // Classic Oxford Shirt — product-level (p1)
+  // Classic Oxford Shirt - product-level (p1)
   {
     id: "a1",
     productId: "p1",
     variantId: undefined,
     fileName: "oxford-shirt-front.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?w=600",
     assetType: "IMAGE",
     title: "Oxford Shirt Front View",
     description: "Clean front-facing product shot on white background.",
@@ -23,7 +24,8 @@ export const mockAssets = [
     productId: "p1",
     variantId: undefined,
     fileName: "oxford-shirt-back.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1603252109303-2751441dd157?w=600",
     assetType: "IMAGE",
     title: "Oxford Shirt Back View",
     description: "Back view on white background.",
@@ -37,15 +39,16 @@ export const mockAssets = [
     uploadedAt: "2025-02-10T09:05:00Z",
   },
 
-  // Classic Oxford Shirt — variant-level (v1)
+  // Classic Oxford Shirt - variant-level (v1)
   {
     id: "a3",
     productId: "p1",
     variantId: "v1",
     fileName: "oxford-white-s-detail.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?w=600",
     assetType: "IMAGE",
-    title: "White S — Collar Detail",
+    title: "White S - Collar Detail",
     description: "Close-up of collar and button detail.",
     tags: ["detail", "collar", "white"],
     status: "PENDING_REVIEW",
@@ -56,13 +59,14 @@ export const mockAssets = [
     uploadedAt: "2025-03-15T08:00:00Z",
   },
 
-  // Slim Fit Chinos — product-level (p2)
+  // Slim Fit Chinos - product-level (p2)
   {
     id: "a4",
     productId: "p2",
     variantId: undefined,
     fileName: "chinos-front.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1473966968600-fa801b869a1a?w=600",
     assetType: "IMAGE",
     title: "Chinos Front View",
     description: "Front product shot on neutral background.",
@@ -75,7 +79,7 @@ export const mockAssets = [
     uploadedAt: "2025-03-12T11:00:00Z",
   },
 
-  // Slim Fit Chinos — variant-level (v4)
+  // Slim Fit Chinos - variant-level (v4)
   {
     id: "a5",
     productId: "p2",
@@ -83,25 +87,30 @@ export const mockAssets = [
     fileName: "chinos-khaki-lifestyle.jpg",
     fileUrl: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=600",
     assetType: "IMAGE",
-    title: "Khaki 32 — Lifestyle Shot",
+    title: "Khaki 32 - Lifestyle Shot",
     description: "Lifestyle shot in urban setting.",
     tags: ["lifestyle", "outdoor", "khaki"],
     status: "REJECTED",
     rejectionReason: "Image is too dark and out of focus. Please reshoot.",
     statusHistory: [
       { status: "PENDING_REVIEW", changedAt: "2025-03-13T09:00:00Z" },
-      { status: "REJECTED", changedAt: "2025-03-14T14:00:00Z", reason: "Image is too dark and out of focus. Please reshoot." },
+      {
+        status: "REJECTED",
+        changedAt: "2025-03-14T14:00:00Z",
+        reason: "Image is too dark and out of focus. Please reshoot.",
+      },
     ],
     uploadedAt: "2025-03-13T09:00:00Z",
   },
 
-  // Wool Overcoat — product-level (p3)
+  // Wool Overcoat - product-level (p3)
   {
     id: "a6",
     productId: "p3",
     variantId: undefined,
     fileName: "overcoat-mood.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=600",
     assetType: "IMAGE",
     title: "Overcoat Mood Shot",
     description: "Editorial mood shot for AW25 campaign.",
@@ -114,13 +123,14 @@ export const mockAssets = [
     uploadedAt: "2025-03-18T10:00:00Z",
   },
 
-  // Summer Floral Dress — product-level (p5)
+  // Summer Floral Dress - product-level (p5)
   {
     id: "a7",
     productId: "p5",
     variantId: undefined,
     fileName: "floral-dress-front.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1612336307429-8a898d10e223?w=600",
     assetType: "IMAGE",
     title: "Floral Dress Front View",
     description: "Front view on white background.",
@@ -134,15 +144,16 @@ export const mockAssets = [
     uploadedAt: "2025-03-05T09:00:00Z",
   },
 
-  // Summer Floral Dress — variant-level (v6)
+  // Summer Floral Dress - variant-level (v6)
   {
     id: "a8",
     productId: "p5",
     variantId: "v6",
     fileName: "floral-dress-xs-detail.jpg",
-    fileUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
+    fileUrl:
+      "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600",
     assetType: "IMAGE",
-    title: "Blue Floral XS — Fabric Detail",
+    title: "Blue Floral XS - Fabric Detail",
     description: "Close-up of fabric print and texture.",
     tags: ["detail", "fabric", "print"],
     status: "PENDING_REVIEW",

@@ -25,7 +25,6 @@ function NavItem({
   return (
     <Link href={href}>
       <Box
-        as="a"
         display="flex"
         alignItems="center"
         gap={3}

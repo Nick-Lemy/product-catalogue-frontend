@@ -11,7 +11,7 @@ function BarListUI({ data, title, titleLabel1 }: BarListUIProps) {
   const chart = useChart<BarListData>({
     sort: { by: "value", direction: "desc" },
     data: data,
-    series: [{ name: "name", color: "white" }],
+    series: [{ name: "name", color: "brand.700" }],
   });
 
   const getPercent = (value: number) =>
@@ -19,14 +19,14 @@ function BarListUI({ data, title, titleLabel1 }: BarListUIProps) {
 
   return (
     <BarList.Root chart={chart}>
-      <BarList.Content color={"blue.500"} bg={"gray.800"} rounded="md" p={4}>
+      <BarList.Content rounded="md" py={4}>
         <BarList.Label title={title} flex="1">
-          <BarList.Bar />
+          <BarList.Bar color={"white"} />
         </BarList.Label>
-        <BarList.Label title={titleLabel1} w="353px" titleAlignment="end">
+        <BarList.Label title={titleLabel1} flex="0 0 10%" titleAlignment="end">
           <BarList.Value />
         </BarList.Label>
-        <BarList.Label title="%" w="34" titleAlignment="end">
+        <BarList.Label title="%" flex="0 0 10%" titleAlignment="end">
           <BarList.Value valueFormatter={(value) => `${getPercent(value)}%`} />
         </BarList.Label>
       </BarList.Content>

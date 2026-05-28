@@ -14,7 +14,7 @@ function SideBar() {
       direction="column"
       w="240px"
       h="100vh"
-      bg="gray.900"
+      bg="brand.900"
       color="white"
       p={4}
     >
