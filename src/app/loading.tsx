@@ -1,12 +1,25 @@
-import { ProgressCircle } from "@chakra-ui/react";
+import { Box, Flex, Spinner, Text } from "@chakra-ui/react";
 
 export default function Loading() {
   return (
-    <ProgressCircle.Root value={27} size="sm">
-      <ProgressCircle.Circle speed="0.65s">
-        <ProgressCircle.Track />
-        <ProgressCircle.Range stroke="blue.700" />
-      </ProgressCircle.Circle>
-    </ProgressCircle.Root>
+    <Flex
+      direction="column"
+      align="center"
+      justify="center"
+      h="100%"
+      flex="1"
+      gap={4}
+      minH="60vh"
+    >
+      <Spinner color="brand.700" size="lg" />
+      <Box textAlign="center">
+        <Text fontWeight="medium" fontSize="sm">
+          Loading
+        </Text>
+        <Text fontSize="xs" color="fg.muted" mt={0.5}>
+          Please wait a moment
+        </Text>
+      </Box>
+    </Flex>
   );
 }
