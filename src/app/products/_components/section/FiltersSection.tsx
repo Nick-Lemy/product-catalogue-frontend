@@ -86,7 +86,7 @@ function FiltersSection({
             variant="ghost"
             size="sm"
             onClick={clearFilters}
-            color="fg.muted"
+            color="red.500"
           >
             Clear
           </Button>
