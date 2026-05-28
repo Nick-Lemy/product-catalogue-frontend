@@ -7,7 +7,7 @@ export interface Variant {
   size: string;
   material: string;
   barcode?: string;
-
-  createdAt: string;
-  updatedAt: string;
 }
+
+export type CreateVariantPayload = Omit<Variant, "id">;
+export type UpdateVariantPayload = Partial<CreateVariantPayload>;

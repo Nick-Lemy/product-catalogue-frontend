@@ -69,4 +69,4 @@ async function update(
 }
 
 const productsService = { find, findById, create, update };
-export default { productsService };
+export default productsService;

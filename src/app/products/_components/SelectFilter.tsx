@@ -6,6 +6,7 @@ interface SelectFilterProps {
   setOption: (value: string) => void;
   options: string[];
 }
+
 function SelectFilter({ title, value, setOption, options }: SelectFilterProps) {
   return (
     <Box flex="1" minW="130px">
@@ -17,7 +18,7 @@ function SelectFilter({ title, value, setOption, options }: SelectFilterProps) {
           value={value}
           onChange={(e) => setOption(e.target.value)}
         >
-          <option value="">All brands</option>
+          <option value="">All {title}</option>
           {options.map((o) => (
             <option key={o} value={o}>
               {o}
