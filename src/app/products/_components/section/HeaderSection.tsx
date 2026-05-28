@@ -1,5 +1,5 @@
-import { Box, Button, HStack, Link, Text } from "@chakra-ui/react";
-import { MdAdd } from "react-icons/md";
+import { Box, HStack, Text } from "@chakra-ui/react";
+import AddProductButton from "@/app/_components/AddProductButton";
 import { mockProducts } from "@/mocks/products";
 
 interface HeaderSectionProps {
@@ -17,18 +17,7 @@ function HeaderSection({ filteredProductsCount }: HeaderSectionProps) {
           {filteredProductsCount} of {mockProducts.length} products
         </Text>
       </Box>
-      <Button
-        asChild
-        size="sm"
-        bg="amber.500"
-        color="white"
-        _hover={{ bg: "amber.600" }}
-      >
-        <Link href="/products/new">
-          <MdAdd size={18} />
-          Add Product
-        </Link>
-      </Button>
+      <AddProductButton />
     </HStack>
   );
 }

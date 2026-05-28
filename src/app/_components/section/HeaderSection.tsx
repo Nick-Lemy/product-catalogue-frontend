@@ -1,5 +1,6 @@
-import { Box, Button, HStack, Link, Text } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import { formatDate } from "@/utils/helpers";
+import AddProductButton from "../AddProductButton";
 
 function HeaderSection() {
   const today = formatDate(new Date(), true);
@@ -16,11 +17,7 @@ function HeaderSection() {
           {today}
         </Text>
       </Box>
-      <Button size="sm" bg="brand.700">
-        <Link color="white" href="/products/new">
-          + Add Product
-        </Link>
-      </Button>
+      <AddProductButton />
     </HStack>
   );
 }
