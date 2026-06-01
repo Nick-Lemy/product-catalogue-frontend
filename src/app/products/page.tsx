@@ -2,7 +2,7 @@
 
 import { Box } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import { mockProducts } from "@/mocks/products";
+import { mockProducts } from "@/mocks/data/products";
 import FiltersSection from "./_components/section/FiltersSection";
 import HeaderSection from "./_components/section/HeaderSection";
 import PaginationSection from "./_components/section/PaginationSection";

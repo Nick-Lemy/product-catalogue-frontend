@@ -1,5 +1,7 @@
+"use client";
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
-import { mockProducts } from "@/mocks/products";
+import { useGetProducts } from "@/app/_hooks/useProducts";
+import Loading from "@/app/loading";
 import { ProductReadiness, ProductStatus } from "@/types/product";
 import SelectFilter from "../SelectFilter";
 
@@ -28,6 +30,11 @@ function FiltersSection({
   readiness,
   setReadiness,
 }: FiltersSectionProps) {
+  const { data: mockProducts, isLoading, error } = useGetProducts();
+  if (error) throw error;
+  if (isLoading || !mockProducts) {
+    return <Loading />;
+  }
   const brands = [...new Set(mockProducts.map((p) => p.brand))];
   const categories = [...new Set(mockProducts.map((p) => p.category))];
   const statusOptions: ProductStatus[] = Object.values(ProductStatus);

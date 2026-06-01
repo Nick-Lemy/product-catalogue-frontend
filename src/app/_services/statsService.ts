@@ -1,18 +1,9 @@
 import { mockAssets } from "@/mocks/data/assets";
 import { mockProducts } from "@/mocks/data/products";
 import type { Asset } from "@/types/asset";
+import type { DashboardStats } from "@/types/stats";
 
 const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
-
-export interface DashboardStats {
-  totalProducts: number;
-  publishedProducts: number;
-  readyToPublish: number;
-  assetsPendingReview: number;
-  rejectedAssets: number;
-  recentAssets: Asset[];
-  productsByBrand: { name: string; value: number }[];
-}
 
 async function getDashboardStats(): Promise<DashboardStats> {
   await delay();

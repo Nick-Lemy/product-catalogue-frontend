@@ -9,23 +9,18 @@ import {
   Separator,
   Text,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
-import type { DashboardStats } from "../_services/statsService";
+import { useGetStats } from "../_hooks/useStats";
+import Loading from "../loading";
 import AssetCard from "./AssetCard";
 
 function RecentlyUploaded() {
-  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(
-    null,
-  );
+  const { data: dashboardStats, isLoading, error } = useGetStats();
+  if (error) throw error;
 
-  useEffect(() => {
-    fetch("/api/stats")
-      .then((res) => res.json() as Promise<DashboardStats>)
-      .then((data) => {
-        setDashboardStats(data);
-      });
-  }, []);
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <Card.Root variant="outline" size="sm">
