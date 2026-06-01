@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
-import { mockDashboardStats } from "@/mocks/stats";
+import { mockDashboardStats } from "@/mocks/data/stats";
 import BarListUI from "./ui/BarList";
 
 function ProductsByBrand() {

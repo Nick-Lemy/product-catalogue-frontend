@@ -2,7 +2,8 @@ import { Flex } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import SideBar from "./_components/SideBar";
-import { Provider } from "./_components/ui/provider";
+import { ChakraUIProvider } from "./_components/ui/ChrakraUIProvider";
+import MSWProvider from "./_components/ui/MSWProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,14 +28,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body>
-        <Provider>
-          <Flex>
-            <SideBar />
-            <Flex direction="column" pt={4} w="full" mx="auto" maxW="1200px">
-              {children}
+        <MSWProvider>
+          <ChakraUIProvider>
+            <Flex>
+              <SideBar />
+              <Flex direction="column" pt={4} w="full" mx="auto" maxW="1200px">
+                {children}
+              </Flex>
             </Flex>
-          </Flex>
-        </Provider>
+          </ChakraUIProvider>
+        </MSWProvider>
       </body>
     </html>
   );

@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -8,11 +9,24 @@ import {
   Separator,
   Text,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
-import { mockDashboardStats } from "@/mocks/stats";
+import type { DashboardStats } from "../_services/statsService";
 import AssetCard from "./AssetCard";
 
 function RecentlyUploaded() {
+  const [dashboardStats, setDashboardStats] = useState<DashboardStats | null>(
+    null,
+  );
+
+  useEffect(() => {
+    fetch("/api/stats")
+      .then((res) => res.json() as Promise<DashboardStats>)
+      .then((data) => {
+        setDashboardStats(data);
+      });
+  }, []);
+
   return (
     <Card.Root variant="outline" size="sm">
       <Card.Header>
@@ -22,7 +36,7 @@ function RecentlyUploaded() {
               Recently Uploaded
             </Text>
             <Text fontSize="xs" color="fg.muted" mt={0.5}>
-              Latest asset uploads
+              Latest asset uploads.
             </Text>
           </Box>
           <Button asChild variant="ghost" size="xs" colorPalette="blue.700">
@@ -35,7 +49,7 @@ function RecentlyUploaded() {
       <Separator />
       <Card.Body pt={3} px={3}>
         <Flex direction="column" gap={1}>
-          {mockDashboardStats.recentAssets.map((asset) => {
+          {dashboardStats?.recentAssets.map((asset) => {
             return (
               <AssetCard
                 key={asset.id}

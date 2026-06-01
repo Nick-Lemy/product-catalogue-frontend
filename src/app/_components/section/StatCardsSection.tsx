@@ -5,7 +5,7 @@ import {
   MdPendingActions,
   MdRocketLaunch,
 } from "react-icons/md";
-import { mockDashboardStats } from "@/mocks/stats";
+import { mockDashboardStats } from "@/mocks/data/stats";
 import StatCard from "../ui/StatCard";
 
 function StatCardsSection() {
