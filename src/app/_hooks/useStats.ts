@@ -1,6 +1,5 @@
 import useSWR from "swr";
 import type { DashboardStats } from "@/types/stats";
-import { fetcher } from "@/utils/api";
 import { getDashboardStats } from "../_services/statsService";
 
 export function useGetStats() {
