@@ -2,10 +2,11 @@ import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
 import {
-  createProducts,
+  createProduct,
+  deleteProduct,
+  findProductById,
   findProducts,
-  findProductsById,
-  updateProducts,
+  updateProduct,
 } from "../_services/productsService";
 
 export function useGetProducts() {
@@ -15,31 +16,23 @@ export function useGetProducts() {
 
 export function useGetProductById(id: string) {
   const { data, isLoading, error } = useSWR(id ? ["products", id] : null, () =>
-    findProductsById(id),
+    findProductById(id),
   );
   return { data, isLoading, error };
 }
 
 export function useAddProduct() {
-  return useSWRMutation(
-    "products",
-    async (_, { arg }) => {
-      return createProducts(arg);
+  return useSWRMutation("products", (_, { arg }) => createProduct(arg), {
+    onSuccess: async () => {
+      await mutate("products");
     },
-    {
-      onSuccess: async () => {
-        await mutate("products");
-      },
-    },
-  );
+  });
 }
 
 export function useUpdateProduct(id: string) {
-  const mutation = useSWRMutation(
+  return useSWRMutation(
     id ? ["products", id] : null,
-    async (_, { arg }) => {
-      return updateProducts(id, arg);
-    },
+    (_, { arg }) => updateProduct(id, arg),
     {
       onSuccess: async () => {
         await mutate("products");
@@ -47,5 +40,13 @@ export function useUpdateProduct(id: string) {
       },
     },
   );
-  return mutation;
+}
+
+export function useDeleteProduct(id: string) {
+  return useSWRMutation(id ? ["products", id] : null, () => deleteProduct(id), {
+    onSuccess: async () => {
+      await mutate("products");
+      await mutate(["products", id]);
+    },
+  });
 }
