@@ -17,26 +17,16 @@ export async function getAssetById(id: string) {
 }
 
 export async function uploadAsset(payload: UploadAssetPayload) {
-  const newAsset: Asset = {
-    id: crypto.randomUUID(),
-    productId: payload.productId,
-    variantId: payload.variantId,
-    fileName: payload.file.name,
-    fileUrl: URL.createObjectURL(payload.file),
-    assetType: payload.assetType,
-    title: payload.title,
-    description: payload.description,
-    tags: payload.tags,
-    status: AssetStatus.PENDING_REVIEW,
-    statusHistory: [
-      {
-        status: AssetStatus.PENDING_REVIEW,
-        changedAt: new Date().toISOString(),
-      },
-    ],
-    uploadedAt: new Date().toISOString(),
-  };
-  const response = await Axios.post<Asset>("/api/assets", newAsset);
+  const formData = new FormData();
+  formData.append("file", payload.file);
+  formData.append("productId", payload.productId);
+  formData.append("assetType", payload.assetType);
+  formData.append("title", payload.title);
+  formData.append("description", payload.description);
+  formData.append("tags", JSON.stringify(payload.tags));
+  if (payload.variantId) formData.append("variantId", payload.variantId);
+
+  const response = await Axios.post<Asset>("/api/assets", formData);
   return response.data;
 }
 
