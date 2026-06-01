@@ -1,4 +1,4 @@
-import { mockAssets } from "@/mocks/assets";
+import { mockAssets } from "@/mocks/data/assets";
 import {
   type Asset,
   type AssetFilters,
