@@ -1,5 +1,5 @@
-import { mockAssets } from "@/mocks/assets";
-import { mockProducts } from "@/mocks/products";
+import { mockAssets } from "@/mocks/data/assets";
+import { mockProducts } from "@/mocks/data/products";
 import type { Asset } from "@/types/asset";
 
 const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
@@ -43,9 +43,8 @@ async function getDashboardStats(): Promise<DashboardStats> {
         p.status !== "PUBLISHED" &&
         p.status !== "ARCHIVED",
     ).length,
-    assetsPendingReview: mockAssets.filter(
-      (a) => a.status === "PENDING_REVIEW",
-    ).length,
+    assetsPendingReview: mockAssets.filter((a) => a.status === "PENDING_REVIEW")
+      .length,
     rejectedAssets: mockAssets.filter((a) => a.status === "REJECTED").length,
     recentAssets,
     productsByBrand,

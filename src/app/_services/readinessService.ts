@@ -1,6 +1,6 @@
-import { mockAssets } from "@/mocks/assets";
-import { mockProducts } from "@/mocks/products";
-import { mockVariants } from "@/mocks/variants";
+import { mockAssets } from "@/mocks/data/assets";
+import { mockProducts } from "@/mocks/data/products";
+import { mockVariants } from "@/mocks/data/variants";
 import { AssetStatus } from "@/types/asset";
 
 const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
@@ -28,14 +28,17 @@ async function find(productId: string): Promise<ReadinessReport> {
   );
 
   const checks: ReadinessCheck[] = [
-    { requirement: "Product has a name",          met: !!product.name },
-    { requirement: "Product has a description",   met: !!product.description },
-    { requirement: "Product has a brand",         met: !!product.brand },
-    { requirement: "Product has a category",      met: !!product.category },
+    { requirement: "Product has a name", met: !!product.name },
+    { requirement: "Product has a description", met: !!product.description },
+    { requirement: "Product has a brand", met: !!product.brand },
+    { requirement: "Product has a category", met: !!product.category },
     { requirement: "Product has a target market", met: !!product.targetMarket },
-    { requirement: "Product has a season",        met: !!product.season },
-    { requirement: "At least one variant added",  met: variants.length > 0 },
-    { requirement: "At least one approved asset", met: approvedAssets.length > 0 },
+    { requirement: "Product has a season", met: !!product.season },
+    { requirement: "At least one variant added", met: variants.length > 0 },
+    {
+      requirement: "At least one approved asset",
+      met: approvedAssets.length > 0,
+    },
   ];
 
   const canPublish = checks.every((c) => c.met);
