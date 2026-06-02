@@ -24,6 +24,7 @@ export function useUploadAsset() {
   return useSWRMutation("assets", (_, { arg }) => uploadAsset(arg), {
     onSuccess: async () => {
       await mutate("assets");
+      await mutate(["stats"]);
     },
   });
 }
@@ -33,6 +34,7 @@ export function useApproveAsset(id: string) {
     onSuccess: async () => {
       await mutate("assets");
       await mutate(["assets", id]);
+      await mutate(["stats"]);
     },
   });
 }
@@ -45,6 +47,7 @@ export function useRejectAsset(id: string) {
       onSuccess: async () => {
         await mutate("assets");
         await mutate(["assets", id]);
+        await mutate(["stats"]);
       },
     },
   );
