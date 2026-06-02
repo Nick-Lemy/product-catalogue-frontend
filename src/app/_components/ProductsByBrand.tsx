@@ -6,22 +6,20 @@ import {
   HStack,
   Link,
   Separator,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
 import { useGetStats } from "../_hooks/useStats";
-import Loading from "../loading";
 import BarListUI from "./ui/BarList";
 
 function ProductsByBrand() {
-  const { data: mockDashboardStats, isLoading, error } = useGetStats();
-  const productsByBrand = mockDashboardStats?.productsByBrand || [];
+  const { data: stats, isLoading, error } = useGetStats();
 
   if (error) throw error;
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  const productsByBrand = stats?.productsByBrand || [];
+
   return (
     <Card.Root variant="outline" size="sm">
       <Card.Header>
@@ -43,11 +41,15 @@ function ProductsByBrand() {
       </Card.Header>
       <Separator />
       <Card.Body pt={4}>
-        <BarListUI
-          data={productsByBrand}
-          title="Brand"
-          titleLabel1="Products"
-        />
+        {isLoading ? (
+          <Spinner color="brand.700" size="sm" />
+        ) : (
+          <BarListUI
+            data={productsByBrand}
+            title="Brand"
+            titleLabel1="Products"
+          />
+        )}
       </Card.Body>
     </Card.Root>
   );

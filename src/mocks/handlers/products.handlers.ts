@@ -3,51 +3,57 @@ import type { Product } from "@/types/product";
 import { mockProducts } from "../data/products";
 
 export const productsHandlers = [
-  http.get("/api/products", () => {
-    return HttpResponse.json(mockProducts);
+  http.get("/api/products", ({ request }) => {
+    const url = new URL(request.url);
+    const name        = url.searchParams.get("name")?.toLowerCase();
+    const productCode = url.searchParams.get("productCode")?.toLowerCase();
+    const brand       = url.searchParams.get("brand");
+    const category    = url.searchParams.get("category");
+    const status      = url.searchParams.get("status");
+    const readiness   = url.searchParams.get("readiness");
+
+    let results = [...mockProducts];
+
+    if (name)        results = results.filter((p) => p.name.toLowerCase().includes(name));
+    if (productCode) results = results.filter((p) => p.productCode.toLowerCase().includes(productCode));
+    if (brand)       results = results.filter((p) => p.brand === brand);
+    if (category)    results = results.filter((p) => p.category === category);
+    if (status)      results = results.filter((p) => p.status === status);
+    if (readiness)   results = results.filter((p) => p.readiness === readiness);
+
+    return HttpResponse.json(results);
   }),
 
   http.get("/api/products/:id", ({ params }) => {
-    const { id } = params;
-    const product = mockProducts.find((p) => p.id === id);
-    if (!product) {
-      return HttpResponse.json({ error: "Product not found" }, { status: 404 });
-    }
+    const product = mockProducts.find((p) => p.id === params.id);
+    if (!product)
+      return HttpResponse.json({ message: "Product not found" }, { status: 404 });
     return HttpResponse.json(product);
   }),
 
   http.post("/api/products", async ({ request }) => {
-    const body = await request.json();
-    const newProduct = {
-      id: crypto.randomUUID(),
-      ...(body as Omit<typeof body, "id">),
-    } as Product;
+    const body = await request.json() as Omit<Product, "id">;
+    const newProduct: Product = { id: crypto.randomUUID(), ...body };
     mockProducts.push(newProduct);
     return HttpResponse.json(newProduct, { status: 201 });
   }),
 
   http.put("/api/products/:id", async ({ params, request }) => {
-    const { id } = params;
-    const body = await request.json();
-    const index = mockProducts.findIndex((p) => p.id === id);
-    if (index === -1) {
-      return HttpResponse.json({ error: "Product not found" }, { status: 404 });
-    }
-    const updatedProduct = {
-      ...mockProducts[index],
-      ...(body as Partial<Product>),
-    };
-    mockProducts[index] = updatedProduct;
-    return HttpResponse.json(updatedProduct);
+    const idx = mockProducts.findIndex((p) => p.id === params.id);
+    if (idx === -1)
+      return HttpResponse.json({ message: "Product not found" }, { status: 404 });
+
+    const body = await request.json() as Partial<Product>;
+    mockProducts[idx] = { ...mockProducts[idx], ...body };
+    return HttpResponse.json(mockProducts[idx]);
   }),
 
   http.delete("/api/products/:id", ({ params }) => {
-    const { id } = params;
-    const index = mockProducts.findIndex((p) => p.id === id);
-    if (index === -1) {
-      return HttpResponse.json({ error: "Product not found" }, { status: 404 });
-    }
-    mockProducts.splice(index, 1);
-    return HttpResponse.json({ message: "Product deleted" });
+    const idx = mockProducts.findIndex((p) => p.id === params.id);
+    if (idx === -1)
+      return HttpResponse.json({ message: "Product not found" }, { status: 404 });
+
+    mockProducts.splice(idx, 1);
+    return new HttpResponse(null, { status: 204 });
   }),
 ];

@@ -2,7 +2,7 @@ import { Box, HStack, Stat } from "@chakra-ui/react";
 
 interface StatCardProps {
   title: string;
-  value: number;
+  value: number | string;
   Icon: React.ElementType;
   helpText?: string;
   colorPalette?: string;

@@ -1,3 +1,4 @@
+"use client";
 import { Flex } from "@chakra-ui/react";
 import {
   MdCloudDone,
@@ -5,36 +6,47 @@ import {
   MdPendingActions,
   MdRocketLaunch,
 } from "react-icons/md";
-import { mockDashboardStats } from "@/mocks/data/stats";
+import { useGetStats } from "@/app/_hooks/useStats";
 import StatCard from "../ui/StatCard";
 
 function StatCardsSection() {
+  const { data: stats, isLoading, error } = useGetStats();
+
+  if (error) throw error;
+
+  const {
+    totalProducts,
+    publishedProducts,
+    readyToPublish,
+    assetsPendingReview,
+  } = stats! ?? {};
+
   return (
     <Flex gap={4} mb={6}>
       <StatCard
         title="Total Products"
-        value={mockDashboardStats.totalProducts}
+        value={isLoading ? "..." : totalProducts}
         Icon={MdInventory2}
         helpText="across all brands"
         colorPalette="blue"
       />
       <StatCard
         title="Published"
-        value={mockDashboardStats.publishedProducts}
+        value={isLoading ? "..." : publishedProducts}
         Icon={MdCloudDone}
         helpText="live in catalogue"
         colorPalette="green"
       />
       <StatCard
         title="Ready to Publish"
-        value={mockDashboardStats.readyToPublish}
+        value={isLoading ? "..." : readyToPublish}
         Icon={MdRocketLaunch}
         helpText="awaiting sign-off"
         colorPalette="teal"
       />
       <StatCard
         title="Pending Review"
-        value={mockDashboardStats.assetsPendingReview}
+        value={isLoading ? "..." : assetsPendingReview}
         Icon={MdPendingActions}
         helpText="assets in queue"
         colorPalette="orange"

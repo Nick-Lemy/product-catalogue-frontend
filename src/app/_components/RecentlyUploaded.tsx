@@ -7,20 +7,17 @@ import {
   HStack,
   Link,
   Separator,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
 import { useGetStats } from "../_hooks/useStats";
-import Loading from "../loading";
 import AssetCard from "./AssetCard";
 
 function RecentlyUploaded() {
-  const { data: dashboardStats, isLoading, error } = useGetStats();
-  if (error) throw error;
+  const { data: stats, isLoading, error } = useGetStats();
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  if (error) throw error;
 
   return (
     <Card.Root variant="outline" size="sm">
@@ -43,25 +40,15 @@ function RecentlyUploaded() {
       </Card.Header>
       <Separator />
       <Card.Body pt={3} px={3}>
-        <Flex direction="column" gap={1}>
-          {dashboardStats?.recentAssets.map((asset) => {
-            return (
-              <AssetCard
-                key={asset.id}
-                asset={{
-                  id: asset.id,
-                  title: asset.title,
-                  fileUrl: asset.fileUrl,
-                  uploadedAt: asset.uploadedAt,
-                  status: asset.status as
-                    | "APPROVED"
-                    | "PENDING_REVIEW"
-                    | "REJECTED",
-                }}
-              />
-            );
-          })}
-        </Flex>
+        {isLoading ? (
+          <Spinner color="brand.700" size="sm" />
+        ) : (
+          <Flex direction="column" gap={1}>
+            {stats?.recentAssets.map((asset) => {
+              return <AssetCard key={asset.id} asset={asset} />;
+            })}
+          </Flex>
+        )}
       </Card.Body>
     </Card.Root>
   );
