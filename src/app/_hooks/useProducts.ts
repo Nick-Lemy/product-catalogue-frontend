@@ -1,6 +1,6 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
-
+import type { ProductFilters } from "@/types/product";
 import {
   createProduct,
   deleteProduct,
@@ -9,8 +9,11 @@ import {
   updateProduct,
 } from "../_services/productsService";
 
-export function useGetProducts() {
-  const { data, isLoading, error } = useSWR("products", findProducts);
+export function useGetProducts(filters?: ProductFilters) {
+  const { data, isLoading, error } = useSWR(
+    ["products", filters],
+    () => findProducts(filters),
+  );
   return { data, isLoading, error };
 }
 

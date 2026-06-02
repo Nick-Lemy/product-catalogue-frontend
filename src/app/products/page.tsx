@@ -1,71 +1,47 @@
 "use client";
 
 import { Box } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
-import { mockProducts } from "@/mocks/data/products";
+import { useSearchParams } from "next/navigation";
+import type { ProductReadiness, ProductStatus } from "@/types/product";
+import { useGetProducts } from "../_hooks/useProducts";
 import FiltersSection from "./_components/section/FiltersSection";
 import HeaderSection from "./_components/section/HeaderSection";
-import PaginationSection from "./_components/section/PaginationSection";
 import ProductsTableSection from "./_components/section/ProductsTableSection";
 
 export default function ProductsPage() {
-  const [search, setSearch] = useState("");
-  const [brand, setBrand] = useState("");
-  const [category, setCategory] = useState("");
-  const [status, setStatus] = useState("");
-  const [readiness, setReadiness] = useState("");
-  const [page, setPage] = useState(1);
-  const pageSize = 4;
+  const searchParams = useSearchParams();
 
-  const filtered = useMemo(() => {
-    setPage(1);
-    return mockProducts.filter((p) => {
-      const q = search.toLowerCase();
-      if (
-        q &&
-        !p.name.toLowerCase().includes(q) &&
-        !p.productCode.toLowerCase().includes(q)
-      )
-        return false;
-      if (brand && p.brand !== brand) return false;
-      if (category && p.category !== category) return false;
-      if (status && p.status !== status) return false;
-      if (readiness && p.readiness !== readiness) return false;
-      return true;
-    });
-  }, [search, brand, category, status, readiness]);
+  const search = searchParams.get("search") ?? "";
+  const brand = searchParams.get("brand") ?? "";
+  const category = searchParams.get("category") ?? "";
+  const status = (searchParams.get("status") as ProductStatus) ?? "";
+  const readiness = (searchParams.get("readiness") as ProductReadiness) ?? "";
 
-  const paginated = filtered.slice((page - 1) * pageSize, page * pageSize);
+  const { data: products = [], error } = useGetProducts({
+    name: search || undefined,
+    brand: brand || undefined,
+    category: category || undefined,
+    status: (status as ProductStatus) || undefined,
+    readiness: (readiness as ProductReadiness) || undefined,
+  });
+
+  if (error) throw error;
 
   return (
     <Box px={6} pb={10}>
-      <HeaderSection filteredProductsCount={filtered.length} />
+      <HeaderSection filteredProductsCount={products.length} />
       <FiltersSection
         search={search}
-        setSearch={setSearch}
         brand={brand}
-        setBrand={setBrand}
         category={category}
-        setCategory={setCategory}
         status={status}
-        setStatus={setStatus}
         readiness={readiness}
-        setReadiness={setReadiness}
       />
 
       <ProductsTableSection
-        filteredProducts={filtered}
-        paginatedProducts={paginated}
+        filteredProducts={products}
+        paginatedProducts={products}
       />
-
-      {filtered.length > pageSize && (
-        <PaginationSection
-          filteredProductsCount={filtered.length}
-          pageSize={pageSize}
-          page={page}
-          setPage={setPage}
-        />
-      )}
     </Box>
   );
 }
