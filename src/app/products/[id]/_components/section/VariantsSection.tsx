@@ -1,16 +1,8 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  HStack,
-  Separator,
-  Spinner,
-  Table,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Card, HStack, Separator, Spinner, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { MdAdd, MdDelete, MdEdit } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import {
   useAddVariant,
   useDeleteVariant,
@@ -18,6 +10,7 @@ import {
 } from "@/app/_hooks/useVariants";
 import type { CreateVariantPayload, Variant } from "@/types/variant";
 import VariantFormDialog from "../VariantFormDialog";
+import VariantsTable from "../VariantsTable";
 
 interface VariantsSectionProps {
   productId: string;
@@ -32,16 +25,29 @@ function VariantsSection({
 }: VariantsSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingVariant, setEditingVariant] = useState<Variant | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const { trigger: addVariant, isMutating: isAdding } =
-    useAddVariant(productId);
+  const { trigger: addVariant, isMutating: isAdding } = useAddVariant(productId);
   const { trigger: updateVariant, isMutating: isUpdating } = useUpdateVariant(
     productId,
     editingVariant?.id ?? "",
   );
-  const { trigger: deleteVariant, isMutating: isDeleting } =
-    useDeleteVariant(productId);
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const { trigger: deleteVariant } = useDeleteVariant(productId);
+
+  const isSubmitting = isAdding || isUpdating;
+
+  function openAdd() {
+    setEditingVariant(null);
+    setDialogOpen(true);
+  }
+  function openEdit(variant: Variant) {
+    setEditingVariant(variant);
+    setDialogOpen(true);
+  }
+  function handleClose() {
+    setDialogOpen(false);
+    setEditingVariant(null);
+  }
 
   async function handleDelete(id: string) {
     setDeletingId(id);
@@ -50,21 +56,6 @@ function VariantsSection({
     } finally {
       setDeletingId(null);
     }
-  }
-
-  const isSubmitting = isAdding || isUpdating;
-
-  function openAdd() {
-    setEditingVariant(null);
-    setDialogOpen(true);
-  }
-  function openEdit(v: Variant) {
-    setEditingVariant(v);
-    setDialogOpen(true);
-  }
-  function handleClose() {
-    setDialogOpen(false);
-    setEditingVariant(null);
   }
 
   async function handleSubmit(data: CreateVariantPayload) {
@@ -107,69 +98,12 @@ function VariantsSection({
             </Text>
           </Card.Body>
         ) : (
-          <Table.Root size="sm" variant="outline" striped>
-            <Table.Header>
-              <Table.Row>
-                {[
-                  "Name",
-                  "Code",
-                  "Colour",
-                  "Size",
-                  "Material",
-                  "Barcode",
-                  "",
-                ].map((h) => (
-                  <Table.ColumnHeader key={h} py={2} px={4}>
-                    {h}
-                  </Table.ColumnHeader>
-                ))}
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              {variants.map((v) => (
-                <Table.Row key={v.id} _hover={{ bg: "bg.subtle" }}>
-                  <Table.Cell py={2} px={4} fontSize="sm">
-                    {v.name}
-                  </Table.Cell>
-                  <Table.Cell py={2} px={4} fontSize="sm">
-                    {v.variantCode}
-                  </Table.Cell>
-                  <Table.Cell py={2} px={4} fontSize="sm">
-                    {v.colour}
-                  </Table.Cell>
-                  <Table.Cell py={2} px={4} fontSize="sm">
-                    {v.size}
-                  </Table.Cell>
-                  <Table.Cell py={2} px={4} fontSize="sm">
-                    {v.material}
-                  </Table.Cell>
-                  <Table.Cell py={2} px={4} fontSize="sm">
-                    {v.barcode ?? "—"}
-                  </Table.Cell>
-                  <Table.Cell py={2} px={4}>
-                    <HStack gap={1} justify="flex-end">
-                      <Button
-                        variant="ghost"
-                        size="xs"
-                        onClick={() => openEdit(v)}
-                      >
-                        <MdEdit size={13} /> Edit
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="xs"
-                        colorPalette="red"
-                        loading={isDeleting && deletingId === v.id}
-                        onClick={() => handleDelete(v.id)}
-                      >
-                        <MdDelete size={13} />
-                      </Button>
-                    </HStack>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
-            </Table.Body>
-          </Table.Root>
+          <VariantsTable
+            variants={variants}
+            deletingId={deletingId}
+            onEdit={openEdit}
+            onDelete={handleDelete}
+          />
         )}
       </Card.Root>
 
