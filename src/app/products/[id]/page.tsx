@@ -4,10 +4,7 @@ import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useGetAssets } from "@/app/_hooks/useAssets";
 import { useGetProductById, useUpdateProduct } from "@/app/_hooks/useProducts";
-import {
-  revalidateReadiness,
-  useGetReadiness,
-} from "@/app/_hooks/useReadiness";
+import { useGetReadiness } from "@/app/_hooks/useReadiness";
 import { useGetVariants } from "@/app/_hooks/useVariants";
 import type { ProductStatus } from "@/types/product";
 import ContentSection from "./_components/section/ContentSection";
@@ -37,7 +34,6 @@ export default function ProductDetailPage() {
 
   async function handleStatusChange(status: ProductStatus) {
     await updateProduct({ status });
-    await revalidateReadiness(id);
   }
 
   return (

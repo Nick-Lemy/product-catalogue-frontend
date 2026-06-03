@@ -28,9 +28,10 @@ export function useUploadAsset() {
     "assets",
     (_, { arg }) => uploadAsset(arg),
     {
-      onSuccess: async () => {
+      onSuccess: async (asset) => {
         await mutate((key) => Array.isArray(key) && key[0] === "assets");
         await mutate("stats");
+        await mutate(["readiness", asset.productId]);
       },
     },
   );
@@ -38,9 +39,10 @@ export function useUploadAsset() {
 
 export function useApproveAsset(id: string) {
   return useSWRMutation(["approve-assets", id], () => approveAsset(id), {
-    onSuccess: async () => {
+    onSuccess: async (asset) => {
       await mutate((key) => Array.isArray(key) && key[0] === "assets");
       await mutate("stats");
+      await mutate(["readiness", asset.productId]);
     },
   });
 }
@@ -50,9 +52,10 @@ export function useRejectAsset(id: string) {
     ["reject-assets", id],
     (_, { arg }) => rejectAsset(id, arg),
     {
-      onSuccess: async () => {
+      onSuccess: async (asset) => {
         await mutate((key) => Array.isArray(key) && key[0] === "assets");
         await mutate("stats");
+        await mutate(["readiness", asset.productId]);
       },
     },
   );

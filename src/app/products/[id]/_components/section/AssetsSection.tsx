@@ -16,7 +16,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { MdUpload } from "react-icons/md";
 import { useUploadAsset } from "@/app/_hooks/useAssets";
-import { revalidateReadiness } from "@/app/_hooks/useReadiness";
 import type { Asset, AssetType } from "@/types/asset";
 import type { Variant } from "@/types/variant";
 import AssetUploadDialog from "../AssetUploadDialog";
@@ -66,7 +65,6 @@ function AssetsSection({
         .map((t) => t.trim())
         .filter(Boolean),
     });
-    await revalidateReadiness(productId);
     setDialogOpen(false);
   }
 

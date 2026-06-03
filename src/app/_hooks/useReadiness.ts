@@ -1,4 +1,4 @@
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { getReadiness } from "../_services/readinessService";
 
 export function useGetReadiness(productId: string) {
@@ -7,8 +7,4 @@ export function useGetReadiness(productId: string) {
     () => getReadiness(productId),
   );
   return { data, isLoading, error };
-}
-
-export async function revalidateReadiness(productId: string) {
-  await mutate(["readiness", productId]);
 }

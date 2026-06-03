@@ -47,6 +47,7 @@ export function useUpdateProduct(id: string) {
     {
       onSuccess: async () => {
         await mutate((key) => Array.isArray(key) && key[0] === "products");
+        await mutate(["readiness", id]);
       },
     },
   );
