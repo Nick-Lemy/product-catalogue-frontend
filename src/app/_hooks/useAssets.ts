@@ -1,5 +1,6 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
+import type { Asset, AssetFilters, UploadAssetPayload } from "@/types/asset";
 import {
   approveAsset,
   getAssetById,
@@ -8,8 +9,10 @@ import {
   uploadAsset,
 } from "../_services/assetsService";
 
-export function useGetAssets() {
-  const { data, isLoading, error } = useSWR("assets", getAssets);
+export function useGetAssets(filters?: AssetFilters) {
+  const { data, isLoading, error } = useSWR(["assets", filters], () =>
+    getAssets(filters),
+  );
   return { data, isLoading, error };
 }
 
@@ -21,12 +24,16 @@ export function useGetAssetById(id: string) {
 }
 
 export function useUploadAsset() {
-  return useSWRMutation("assets", (_, { arg }) => uploadAsset(arg), {
-    onSuccess: async () => {
-      await mutate("assets");
-      await mutate(["stats"]);
+  return useSWRMutation<Asset, Error, string, UploadAssetPayload>(
+    "assets",
+    (_, { arg }) => uploadAsset(arg),
+    {
+      onSuccess: async () => {
+        await mutate("assets");
+        await mutate(["stats"]);
+      },
     },
-  });
+  );
 }
 
 export function useApproveAsset(id: string) {

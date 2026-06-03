@@ -3,8 +3,6 @@ export async function initMocks() {
 
   const { worker } = await import("./browser");
 
-  if (worker.state === "activated") return;
-
   await worker.start({
     onUnhandledRequest: "bypass",
   });

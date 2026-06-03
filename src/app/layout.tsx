@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import SideBar from "./_components/SideBar";
@@ -31,7 +31,9 @@ export default function RootLayout({
         <MSWProvider>
           <ChakraUIProvider>
             <Flex>
-              <SideBar />
+              <Box position="sticky" top={0} h="100vh" flexShrink={0}>
+                <SideBar />
+              </Box>
               <Flex direction="column" pt={4} w="full" mx="auto" maxW="1200px">
                 {children}
               </Flex>

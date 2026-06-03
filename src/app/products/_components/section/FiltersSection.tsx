@@ -31,6 +31,8 @@ function FiltersSection({
   const setParam = useCallback(
     (key: string, value: string) => {
       const params = new URLSearchParams(searchParams.toString());
+      const current = params.get(key) ?? "";
+      if (current === value) return;
       if (value) {
         params.set(key, value);
       } else {
