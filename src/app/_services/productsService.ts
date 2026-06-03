@@ -21,10 +21,7 @@ export async function findProductById(id: string): Promise<Product | null> {
 }
 
 export async function createProduct(payload: CreateProductPayload) {
-  const response = await Axios.post<Product>("/api/products", {
-    id: crypto.randomUUID(),
-    ...payload,
-  });
+  const response = await Axios.post<Product>("/api/products", payload);
   return response.data;
 }
 

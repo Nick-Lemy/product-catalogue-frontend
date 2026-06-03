@@ -1,5 +1,10 @@
 import { HttpResponse, http } from "msw";
-import type { Product } from "@/types/product";
+import {
+  type CreateProductPayload,
+  type Product,
+  ProductReadiness,
+  ProductStatus,
+} from "@/types/product";
 import { mockProducts } from "../data/products";
 
 export const productsHandlers = [
@@ -39,8 +44,16 @@ export const productsHandlers = [
   }),
 
   http.post("/api/products", async ({ request }) => {
-    const body = (await request.json()) as Omit<Product, "id">;
-    const newProduct: Product = { id: crypto.randomUUID(), ...body };
+    const body = (await request.json()) as CreateProductPayload;
+    const now = new Date().toISOString();
+    const newProduct: Product = {
+      ...body,
+      id: crypto.randomUUID(),
+      status: ProductStatus.DRAFT,
+      readiness: ProductReadiness.NOT_READY,
+      createdAt: now,
+      updatedAt: now,
+    };
     mockProducts.push(newProduct);
     return HttpResponse.json(newProduct, { status: 201 });
   }),

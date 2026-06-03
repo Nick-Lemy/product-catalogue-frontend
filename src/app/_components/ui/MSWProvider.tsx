@@ -8,7 +8,7 @@ export default function MSWProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [ready, setReady] = useState(process.env.NODE_ENV !== "development");
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     initMocks().then(() => setReady(true));
