@@ -43,10 +43,14 @@ export function useUpdateVariant(productId: string, id: string) {
   );
 }
 
-export function useDeleteVariant(productId: string, id: string) {
-  return useSWRMutation(id ? ["variants", id] : null, () => deleteVariant(id), {
-    onSuccess: async () => {
-      await mutate(["variants", productId]);
+export function useDeleteVariant(productId: string) {
+  return useSWRMutation(
+    productId ? ["variants", productId, "delete"] : null,
+    (_, { arg }: { arg: string }) => deleteVariant(arg),
+    {
+      onSuccess: async () => {
+        await mutate(["variants", productId]);
+      },
     },
-  });
+  );
 }

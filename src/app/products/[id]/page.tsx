@@ -4,7 +4,10 @@ import { Box, Flex, Spinner } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useGetAssets } from "@/app/_hooks/useAssets";
 import { useGetProductById, useUpdateProduct } from "@/app/_hooks/useProducts";
-import { revalidateReadiness, useGetReadiness } from "@/app/_hooks/useReadiness";
+import {
+  revalidateReadiness,
+  useGetReadiness,
+} from "@/app/_hooks/useReadiness";
 import { useGetVariants } from "@/app/_hooks/useVariants";
 import type { ProductStatus } from "@/types/product";
 import ContentSection from "./_components/section/ContentSection";
@@ -13,11 +16,14 @@ import HeaderSection from "./_components/section/HeaderSection";
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data: product,  error: productError              } = useGetProductById(id);
-  const { data: variants, isLoading: variantsLoading       } = useGetVariants(id);
-  const { data: assets,   isLoading: assetsLoading         } = useGetAssets({ productId: id });
-  const { data: readiness, isLoading: readinessLoading     } = useGetReadiness(id);
-  const { trigger: updateProduct, isMutating: isUpdating   } = useUpdateProduct(id);
+  const { data: product, error: productError } = useGetProductById(id);
+  const { data: variants, isLoading: variantsLoading } = useGetVariants(id);
+  const { data: assets, isLoading: assetsLoading } = useGetAssets({
+    productId: id,
+  });
+  const { data: readiness, isLoading: readinessLoading } = useGetReadiness(id);
+  const { trigger: updateProduct, isMutating: isUpdating } =
+    useUpdateProduct(id);
 
   if (productError) throw productError;
 
@@ -35,7 +41,7 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <Box px={6} pb={10}>
+    <Box px={6} pb={10} minH="100vh">
       <HeaderSection
         product={product}
         readiness={readiness}

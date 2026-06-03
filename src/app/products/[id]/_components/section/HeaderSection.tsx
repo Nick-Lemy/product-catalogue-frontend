@@ -1,8 +1,9 @@
-import { Badge, Box, Button, HStack, Spinner, Steps, Text } from "@chakra-ui/react";
+import { Badge, Box, Button, HStack, Spinner, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { MdArrowBack, MdEdit } from "react-icons/md";
 import type { Product, ProductStatus } from "@/types/product";
 import type { ReadinessReport } from "@/types/readiness";
+import StatusStepper from "../StatusStepper";
 
 const statusConfig = {
   DRAFT:     { label: "Draft",      colorPalette: "gray"   },
@@ -10,13 +11,6 @@ const statusConfig = {
   PUBLISHED: { label: "Published",  colorPalette: "green"  },
   ARCHIVED:  { label: "Archived",   colorPalette: "red"    },
 } as const;
-
-const statusStep: Record<string, number> = {
-  DRAFT:     0,
-  IN_REVIEW: 1,
-  PUBLISHED: 3,
-  ARCHIVED:  3,
-};
 
 interface HeaderSectionProps {
   product: Product;
@@ -77,27 +71,7 @@ function HeaderSection({ product, readiness, isUpdating, onStatusChange }: Heade
         </HStack>
       </HStack>
 
-      {!isArchived && (
-        <Steps.Root
-          step={statusStep[product.status]}
-          count={3}
-          size="sm"
-          colorPalette="amber"
-          linear
-        >
-          <Steps.List>
-            {["Draft", "In Review", "Published"].map((label, i) => (
-              <Steps.Item key={label} index={i}>
-                <Steps.Trigger>
-                  <Steps.Indicator />
-                  <Steps.Title fontSize="xs">{label}</Steps.Title>
-                </Steps.Trigger>
-                {i < 2 && <Steps.Separator />}
-              </Steps.Item>
-            ))}
-          </Steps.List>
-        </Steps.Root>
-      )}
+      {!isArchived && <StatusStepper status={product.status} />}
     </Box>
   );
 }

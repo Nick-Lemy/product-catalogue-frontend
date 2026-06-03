@@ -39,10 +39,18 @@ function VariantsSection({
     productId,
     editingVariant?.id ?? "",
   );
-  const { trigger: deleteVariant, isMutating: isDeleting } = useDeleteVariant(
-    productId,
-    "",
-  );
+  const { trigger: deleteVariant, isMutating: isDeleting } =
+    useDeleteVariant(productId);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  async function handleDelete(id: string) {
+    setDeletingId(id);
+    try {
+      await deleteVariant(id);
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   const isSubmitting = isAdding || isUpdating;
 
@@ -151,8 +159,8 @@ function VariantsSection({
                         variant="ghost"
                         size="xs"
                         colorPalette="red"
-                        loading={isDeleting}
-                        onClick={() => deleteVariant()}
+                        loading={isDeleting && deletingId === v.id}
+                        onClick={() => handleDelete(v.id)}
                       >
                         <MdDelete size={13} />
                       </Button>
