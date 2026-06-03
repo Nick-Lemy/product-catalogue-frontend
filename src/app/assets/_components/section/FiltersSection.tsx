@@ -1,26 +1,24 @@
 "use client";
-import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Input, NativeSelect, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@/app/_hooks/useDebounce";
 import { useGetProducts } from "@/app/_hooks/useProducts";
 import { useQueryParams } from "@/app/_hooks/useQueryParams";
-import { ProductReadiness, ProductStatus } from "@/types/product";
-import SelectFilter from "../SelectFilter";
+import SelectFilter from "@/app/products/_components/SelectFilter";
+import { AssetStatus, AssetType } from "@/types/asset";
 
 interface FiltersSectionProps {
   search: string;
-  brand: string;
-  category: string;
+  productId: string;
+  assetType: string;
   status: string;
-  readiness: string;
 }
 
 function FiltersSection({
   search,
-  brand,
-  category,
+  productId,
+  assetType,
   status,
-  readiness,
 }: FiltersSectionProps) {
   const { setParam, clearParams } = useQueryParams();
 
@@ -39,12 +37,10 @@ function FiltersSection({
   const { data: products, error } = useGetProducts();
   if (error) throw error;
 
-  const brands = [...new Set(products?.map((p) => p.brand))];
-  const categories = [...new Set(products?.map((p) => p.category))];
-  const statusOptions: ProductStatus[] = Object.values(ProductStatus);
-  const readinessOptions: ProductReadiness[] = Object.values(ProductReadiness);
+  const typeOptions: AssetType[] = Object.values(AssetType);
+  const statusOptions: AssetStatus[] = Object.values(AssetStatus);
 
-  const hasFilters = search || brand || category || status || readiness;
+  const hasFilters = search || productId || assetType || status;
 
   return (
     <Box borderWidth="1px" rounded="lg" mb={6}>
@@ -54,23 +50,38 @@ function FiltersSection({
             Search
           </Text>
           <Input
-            placeholder="Name or product code..."
+            placeholder="File name..."
             size="sm"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
           />
         </Box>
+
+        <Box flex="1" minW="130px">
+          <Text fontSize="xs" fontWeight="medium" color="fg.muted" mb={1}>
+            Product
+          </Text>
+          <NativeSelect.Root size="sm">
+            <NativeSelect.Field
+              value={productId}
+              onChange={(e) => setParam("productId", e.target.value)}
+            >
+              <option value="">All Products</option>
+              {products?.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name}
+                </option>
+              ))}
+            </NativeSelect.Field>
+            <NativeSelect.Indicator />
+          </NativeSelect.Root>
+        </Box>
+
         <SelectFilter
-          title="Brand"
-          value={brand}
-          setOption={(value) => setParam("brand", value)}
-          options={brands}
-        />
-        <SelectFilter
-          title="Category"
-          value={category}
-          setOption={(value) => setParam("category", value)}
-          options={categories}
+          title="Type"
+          value={assetType}
+          setOption={(value) => setParam("assetType", value)}
+          options={typeOptions}
         />
         <SelectFilter
           title="Status"
@@ -78,12 +89,7 @@ function FiltersSection({
           setOption={(value) => setParam("status", value)}
           options={statusOptions}
         />
-        <SelectFilter
-          title="Readiness"
-          value={readiness}
-          setOption={(value) => setParam("readiness", value)}
-          options={readinessOptions}
-        />
+
         {hasFilters && (
           <Button
             variant="ghost"
