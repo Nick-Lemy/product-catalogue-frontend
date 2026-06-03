@@ -15,7 +15,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { MdCheck, MdClose, MdDescription, MdOpenInNew } from "react-icons/md";
 import { useApproveAsset, useRejectAsset } from "@/app/_hooks/useAssets";
-import { AssetType, type Asset } from "@/types/asset";
+import { type Asset, AssetType } from "@/types/asset";
 import RejectDialog from "./RejectDialog";
 
 interface ReviewItemProps {
@@ -25,7 +25,9 @@ interface ReviewItemProps {
 
 function ReviewItem({ asset, productName }: ReviewItemProps) {
   const [rejectOpen, setRejectOpen] = useState(false);
-  const { trigger: approve, isMutating: isApproving } = useApproveAsset(asset.id);
+  const { trigger: approve, isMutating: isApproving } = useApproveAsset(
+    asset.id,
+  );
   const { trigger: reject, isMutating: isRejecting } = useRejectAsset(asset.id);
 
   async function handleReject(reason: string) {
@@ -39,7 +41,13 @@ function ReviewItem({ asset, productName }: ReviewItemProps) {
         {/* Thumbnail */}
         <Box w="140px" flexShrink={0} bg="bg.muted">
           {asset.assetType === AssetType.IMAGE ? (
-            <Image src={asset.fileUrl} alt={asset.title} w="full" h="full" objectFit="cover" />
+            <Image
+              src={asset.fileUrl}
+              alt={asset.title}
+              w="full"
+              h="full"
+              objectFit="cover"
+            />
           ) : asset.assetType === AssetType.VIDEO ? (
             <video
               src={asset.fileUrl}
@@ -80,7 +88,12 @@ function ReviewItem({ asset, productName }: ReviewItemProps) {
           {asset.tags.length > 0 && (
             <Wrap gap={1} mt={2}>
               {asset.tags.map((tag) => (
-                <Badge key={tag} variant="surface" colorPalette="gray" size="xs">
+                <Badge
+                  key={tag}
+                  variant="surface"
+                  colorPalette="gray"
+                  size="xs"
+                >
                   {tag}
                 </Badge>
               ))}

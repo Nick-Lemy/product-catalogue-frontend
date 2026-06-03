@@ -48,7 +48,7 @@ export function useApproveAsset(id: string) {
 }
 
 export function useRejectAsset(id: string) {
-  return useSWRMutation(
+  return useSWRMutation<Asset, Error, [string, string], string>(
     ["reject-assets", id],
     (_, { arg }) => rejectAsset(id, arg),
     {
