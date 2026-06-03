@@ -1,5 +1,6 @@
-import { Box, HStack, Text } from "@chakra-ui/react";
-import UploadAssetButton from "../UploadAssetButton";
+import { Box, Button, HStack, Text } from "@chakra-ui/react";
+import Link from "next/link";
+import { MdUpload } from "react-icons/md";
 
 interface HeaderSectionProps {
   assetCount: number;
@@ -16,7 +17,17 @@ function HeaderSection({ assetCount }: HeaderSectionProps) {
           {assetCount} {assetCount === 1 ? "asset" : "assets"}
         </Text>
       </Box>
-      <UploadAssetButton />
+      <Button
+        asChild
+        size="sm"
+        bg="amber.500"
+        color="white"
+        _hover={{ bg: "amber.600" }}
+      >
+        <Link href="/assets/upload">
+          <MdUpload size={16} /> Upload Asset
+        </Link>
+      </Button>
     </HStack>
   );
 }
