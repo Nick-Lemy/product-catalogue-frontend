@@ -29,8 +29,8 @@ export function useUploadAsset() {
     (_, { arg }) => uploadAsset(arg),
     {
       onSuccess: async () => {
-        await mutate("assets");
-        await mutate(["stats"]);
+        await mutate((key) => Array.isArray(key) && key[0] === "assets");
+        await mutate("stats");
       },
     },
   );
@@ -39,9 +39,8 @@ export function useUploadAsset() {
 export function useApproveAsset(id: string) {
   return useSWRMutation(["approve-assets", id], () => approveAsset(id), {
     onSuccess: async () => {
-      await mutate("assets");
-      await mutate(["assets", id]);
-      await mutate(["stats"]);
+      await mutate((key) => Array.isArray(key) && key[0] === "assets");
+      await mutate("stats");
     },
   });
 }
@@ -52,9 +51,8 @@ export function useRejectAsset(id: string) {
     (_, { arg }) => rejectAsset(id, arg),
     {
       onSuccess: async () => {
-        await mutate("assets");
-        await mutate(["assets", id]);
-        await mutate(["stats"]);
+        await mutate((key) => Array.isArray(key) && key[0] === "assets");
+        await mutate("stats");
       },
     },
   );

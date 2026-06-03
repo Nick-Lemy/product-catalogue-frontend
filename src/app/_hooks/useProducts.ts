@@ -34,7 +34,7 @@ export function useAddProduct() {
     (_, { arg }) => createProduct(arg),
     {
       onSuccess: async () => {
-        await mutate("products");
+        await mutate((key) => Array.isArray(key) && key[0] === "products");
       },
     },
   );
@@ -46,8 +46,7 @@ export function useUpdateProduct(id: string) {
     (_, { arg }) => updateProduct(id, arg),
     {
       onSuccess: async () => {
-        await mutate("products");
-        await mutate(["products", id]);
+        await mutate((key) => Array.isArray(key) && key[0] === "products");
       },
     },
   );
@@ -59,8 +58,7 @@ export function useDeleteProduct(id: string) {
     () => deleteProduct(id),
     {
       onSuccess: async () => {
-        await mutate("products");
-        await mutate(["products", id]);
+        await mutate((key) => Array.isArray(key) && key[0] === "products");
       },
     },
   );

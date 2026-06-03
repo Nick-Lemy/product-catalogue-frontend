@@ -2,7 +2,7 @@
 import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import { AiOutlineProduct } from "react-icons/ai";
 import { FaUser } from "react-icons/fa6";
-import { MdDashboard, MdInventory } from "react-icons/md";
+import { MdDashboard, MdFactCheck, MdInventory } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import AvatarImage from "./ui/AvatarImage";
 import NavItem from "./ui/NavItem";
@@ -26,6 +26,7 @@ function SideBar() {
         <NavItem icon={MdDashboard} label="Dashboard" href="/" />
         <NavItem icon={MdInventory} label="Products" href="/products" />
         <NavItem icon={AiOutlineProduct} label="Assets" href="/assets" />
+        <NavItem icon={MdFactCheck} label="Review Queue" href="/assets/review" />
         <NavItem icon={FaUser} label="Profile" href="/profile" />
       </VStack>
       <Box display="flex" alignItems="center" gap={2} mt="auto" as="footer">

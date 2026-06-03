@@ -1,6 +1,7 @@
-import { Badge, Box, Card, Image, Text } from "@chakra-ui/react";
+import { Badge, Box, Card, Center, Image, Text } from "@chakra-ui/react";
 import Link from "next/link";
-import type { Asset } from "@/types/asset";
+import { MdDescription } from "react-icons/md";
+import { AssetType, type Asset } from "@/types/asset";
 
 const statusBadge = {
   APPROVED: { label: "Approved", colorPalette: "green" },
@@ -28,13 +29,26 @@ function AssetGridCard({ asset, productName }: AssetGridCardProps) {
     >
       <Link href={`/assets/${asset.id}`}>
         <Box position="relative" h="160px" bg="bg.muted">
-          <Image
-            src={asset.fileUrl}
-            alt={asset.title}
-            w="full"
-            h="full"
-            objectFit="cover"
-          />
+          {asset.assetType === AssetType.IMAGE ? (
+            <Image
+              src={asset.fileUrl}
+              alt={asset.title}
+              w="full"
+              h="full"
+              objectFit="cover"
+            />
+          ) : asset.assetType === AssetType.VIDEO ? (
+            <video
+              src={asset.fileUrl}
+              muted
+              preload="metadata"
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            />
+          ) : (
+            <Center h="full" color="fg.muted">
+              <MdDescription size={40} />
+            </Center>
+          )}
           <Badge
             colorPalette={badge.colorPalette}
             variant="solid"
