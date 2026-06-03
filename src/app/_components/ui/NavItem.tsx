@@ -18,7 +18,6 @@ function NavItem({
   const route = usePathname();
 
   useEffect(() => {
-    console.log("Current route:", route);
     setIsActive(route === href);
   }, [route, href]);
 
