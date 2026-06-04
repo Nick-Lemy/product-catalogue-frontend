@@ -2,7 +2,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
 
 function NavItem({
   icon: Icon,
@@ -13,13 +12,9 @@ function NavItem({
   label: string;
   href: string;
 }) {
-  const [isActive, setIsActive] = useState(false);
-
   const route = usePathname();
 
-  useEffect(() => {
-    setIsActive(route === href);
-  }, [route, href]);
+  const isActive = route === href;
 
   return (
     <Link href={href}>
