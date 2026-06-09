@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -5,13 +6,20 @@ import {
   HStack,
   Link,
   Separator,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
-import { mockDashboardStats } from "@/mocks/stats";
+import { useGetStats } from "../_hooks/useStats";
 import BarListUI from "./ui/BarList";
 
 function ProductsByBrand() {
+  const { data: stats, isLoading, error } = useGetStats();
+
+  if (error) throw error;
+
+  const productsByBrand = stats?.productsByBrand || [];
+
   return (
     <Card.Root variant="outline" size="sm">
       <Card.Header>
@@ -33,11 +41,15 @@ function ProductsByBrand() {
       </Card.Header>
       <Separator />
       <Card.Body pt={4}>
-        <BarListUI
-          data={mockDashboardStats.productsByBrand}
-          title="Brand"
-          titleLabel1="Products"
-        />
+        {isLoading ? (
+          <Spinner color="brand.700" size="sm" />
+        ) : (
+          <BarListUI
+            data={productsByBrand}
+            title="Brand"
+            titleLabel1="Products"
+          />
+        )}
       </Card.Body>
     </Card.Root>
   );

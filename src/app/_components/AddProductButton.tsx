@@ -6,7 +6,7 @@ function AddProductButton() {
     <Button
       asChild
       size="sm"
-      bg="amber.500"
+      bg="brand.500"
       color="white"
       _hover={{ bg: "amber.600" }}
     >

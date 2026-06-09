@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Button,
@@ -6,13 +7,18 @@ import {
   HStack,
   Link,
   Separator,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { BsArrowRight } from "react-icons/bs";
-import { mockDashboardStats } from "@/mocks/stats";
+import { useGetStats } from "../_hooks/useStats";
 import AssetCard from "./AssetCard";
 
 function RecentlyUploaded() {
+  const { data: stats, isLoading, error } = useGetStats();
+
+  if (error) throw error;
+
   return (
     <Card.Root variant="outline" size="sm">
       <Card.Header>
@@ -22,7 +28,7 @@ function RecentlyUploaded() {
               Recently Uploaded
             </Text>
             <Text fontSize="xs" color="fg.muted" mt={0.5}>
-              Latest asset uploads
+              Latest asset uploads.
             </Text>
           </Box>
           <Button asChild variant="ghost" size="xs" colorPalette="blue.700">
@@ -34,25 +40,15 @@ function RecentlyUploaded() {
       </Card.Header>
       <Separator />
       <Card.Body pt={3} px={3}>
-        <Flex direction="column" gap={1}>
-          {mockDashboardStats.recentAssets.map((asset) => {
-            return (
-              <AssetCard
-                key={asset.id}
-                asset={{
-                  id: asset.id,
-                  title: asset.title,
-                  fileUrl: asset.fileUrl,
-                  uploadedAt: asset.uploadedAt,
-                  status: asset.status as
-                    | "APPROVED"
-                    | "PENDING_REVIEW"
-                    | "REJECTED",
-                }}
-              />
-            );
-          })}
-        </Flex>
+        {isLoading ? (
+          <Spinner color="brand.700" size="sm" />
+        ) : (
+          <Flex direction="column" gap={1}>
+            {stats?.recentAssets.map((asset) => {
+              return <AssetCard key={asset.id} asset={asset} />;
+            })}
+          </Flex>
+        )}
       </Card.Body>
     </Card.Root>
   );

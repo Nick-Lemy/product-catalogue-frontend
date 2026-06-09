@@ -1,47 +1,50 @@
+"use client";
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
-import { mockProducts } from "@/mocks/products";
+import { useEffect, useState } from "react";
+import { useDebounce } from "@/app/_hooks/useDebounce";
+import { useGetProducts } from "@/app/_hooks/useProducts";
+import { useQueryParams } from "@/app/_hooks/useQueryParams";
 import { ProductReadiness, ProductStatus } from "@/types/product";
 import SelectFilter from "../SelectFilter";
 
 interface FiltersSectionProps {
   search: string;
-  setSearch: (value: string) => void;
   brand: string;
-  setBrand: (value: string) => void;
   category: string;
-  setCategory: (value: string) => void;
   status: string;
-  setStatus: (value: string) => void;
   readiness: string;
-  setReadiness: (value: string) => void;
 }
 
 function FiltersSection({
   search,
-  setSearch,
   brand,
-  setBrand,
   category,
-  setCategory,
   status,
-  setStatus,
   readiness,
-  setReadiness,
 }: FiltersSectionProps) {
-  const brands = [...new Set(mockProducts.map((p) => p.brand))];
-  const categories = [...new Set(mockProducts.map((p) => p.category))];
+  const { setParam, clearParams } = useQueryParams();
+
+  const [inputValue, setInputValue] = useState(search);
+  const debouncedSearch = useDebounce(inputValue, 500);
+
+  useEffect(() => {
+    if (debouncedSearch.length === 0) {
+      setParam("search", "");
+      return;
+    }
+    if (debouncedSearch.length < 3) return;
+    setParam("search", debouncedSearch);
+  }, [debouncedSearch, setParam]);
+
+  const { data: products, error } = useGetProducts();
+  if (error) throw error;
+
+  const brands = [...new Set(products?.map((p) => p.brand))];
+  const categories = [...new Set(products?.map((p) => p.category))];
   const statusOptions: ProductStatus[] = Object.values(ProductStatus);
   const readinessOptions: ProductReadiness[] = Object.values(ProductReadiness);
 
   const hasFilters = search || brand || category || status || readiness;
-
-  const clearFilters = () => {
-    setSearch("");
-    setBrand("");
-    setCategory("");
-    setStatus("");
-    setReadiness("");
-  };
 
   return (
     <Box borderWidth="1px" rounded="lg" mb={6}>
@@ -53,39 +56,42 @@ function FiltersSection({
           <Input
             placeholder="Name or product code..."
             size="sm"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
           />
         </Box>
         <SelectFilter
           title="Brand"
           value={brand}
-          setOption={setBrand}
+          setOption={(value) => setParam("brand", value)}
           options={brands}
         />
         <SelectFilter
           title="Category"
           value={category}
-          setOption={setCategory}
+          setOption={(value) => setParam("category", value)}
           options={categories}
         />
         <SelectFilter
           title="Status"
           value={status}
-          setOption={setStatus}
+          setOption={(value) => setParam("status", value)}
           options={statusOptions}
         />
         <SelectFilter
           title="Readiness"
           value={readiness}
-          setOption={setReadiness}
+          setOption={(value) => setParam("readiness", value)}
           options={readinessOptions}
         />
         {hasFilters && (
           <Button
             variant="ghost"
             size="sm"
-            onClick={clearFilters}
+            onClick={() => {
+              setInputValue("");
+              clearParams();
+            }}
             color="red.500"
           >
             Clear

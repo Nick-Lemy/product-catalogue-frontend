@@ -1,6 +1,6 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import AddProductButton from "@/app/_components/AddProductButton";
-import { mockProducts } from "@/mocks/products";
+import { mockProducts } from "@/mocks/data/products";
 
 interface HeaderSectionProps {
   filteredProductsCount: number;

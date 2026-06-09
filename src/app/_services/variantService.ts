@@ -1,44 +1,39 @@
-import { mockVariants } from "@/mocks/variants";
 import type {
   CreateVariantPayload,
   UpdateVariantPayload,
   Variant,
 } from "@/types/variant";
+import { Axios } from "@/utils/api";
 
-const delay = (ms = 400) => new Promise((r) => setTimeout(r, ms));
-
-async function findByProductId(productId: string): Promise<Variant[]> {
-  await delay();
-  return mockVariants.filter((v) => v.productId === productId);
+export async function findVariantsByProductId(
+  productId: string,
+): Promise<Variant[]> {
+  const response = await Axios.get<Variant[]>("/api/variants", {
+    params: { productId },
+  });
+  return response.data;
 }
 
-async function create(payload: CreateVariantPayload): Promise<Variant> {
-  await delay();
-  const newVariant: Variant = {
-    id: `v${Date.now()}`,
-    ...payload,
-  };
-  mockVariants.push(newVariant);
-  return newVariant;
+export async function findVariantById(id: string): Promise<Variant> {
+  const response = await Axios.get<Variant>(`/api/variants/${id}`);
+  return response.data;
 }
 
-async function update(
+export async function createVariant(
+  payload: CreateVariantPayload,
+): Promise<Variant> {
+  const response = await Axios.post<Variant>("/api/variants", payload);
+  return response.data;
+}
+
+export async function updateVariant(
   id: string,
   payload: UpdateVariantPayload,
 ): Promise<Variant> {
-  await delay();
-  const idx = mockVariants.findIndex((v) => v.id === id);
-  if (idx === -1) throw new Error("Variant not found");
-  mockVariants[idx] = { ...mockVariants[idx], ...payload };
-  return mockVariants[idx];
+  const response = await Axios.put<Variant>(`/api/variants/${id}`, payload);
+  return response.data;
 }
 
-async function remove(id: string): Promise<void> {
-  await delay();
-  const idx = mockVariants.findIndex((v) => v.id === id);
-  if (idx === -1) throw new Error("Variant not found");
-  mockVariants.splice(idx, 1);
+export async function deleteVariant(id: string): Promise<void> {
+  await Axios.delete(`/api/variants/${id}`);
 }
-
-const variantService = { findByProductId, create, update, remove };
-export default variantService;
